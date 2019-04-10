@@ -1,26 +1,26 @@
 package views;
 
 import java.awt.Color;
+import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class NoteGUI extends JPanel{
+public class NoteGUI extends JDialog{
 	
 	public JTextField jtfTitle;
 	public JTextArea jtaNote;
 	public JButton jbSave;
 	
-	public NoteGUI() {
-
+	public NoteGUI(Frame frame) {
+		super(frame, true);
 		setBackground(new Color(34,34,34));
-		setVisible(true);
+		//setVisible(true);
 		setLayout(new GridBagLayout());
 		
 		this.jtfTitle = new JTextField("Your Title", 20);

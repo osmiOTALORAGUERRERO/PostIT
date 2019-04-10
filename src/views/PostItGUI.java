@@ -1,11 +1,8 @@
 package views;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -13,17 +10,21 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JViewport;
 
 public class PostItGUI extends JFrame{
 	
-	public JLabel title;
-	public JScrollPane jspNotes;
-	public JButton jbNewNote;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public JPanel panelHeader;
+	public JLabel title;
+	public JButton jbNewNote;
 	public JPanel panelBody;
+	public JScrollPane jspNotes;
 	public ArrayList<JButton> jbNotes;
-	
+	public ArrayList<NoteGUI> guiNotes;
+	public ArrayList<NoteGUI> guiNewNotes;
 	
 	public PostItGUI() {
 		setTitle("Post It");
@@ -39,6 +40,7 @@ public class PostItGUI extends JFrame{
 	}
 	
 	public void panelHeader() {
+		guiNewNotes = new ArrayList<NoteGUI>();
 		panelHeader = new JPanel();
 		panelHeader.setLayout(new GridLayout(1,2));
 		title = new JLabel("Your Notes");
@@ -60,7 +62,7 @@ public class PostItGUI extends JFrame{
 		jspNotes.setBounds(0,0,100,250);
 		jspNotes.setViewportView(panelBody);
 		jbNotes = new ArrayList<JButton>();
-		
+		guiNotes = new ArrayList<NoteGUI>();
 		add(jspNotes);
 	}
 	
@@ -68,9 +70,27 @@ public class PostItGUI extends JFrame{
 		JButton button = new JButton(name);
 		button.setPreferredSize(new Dimension(100, 20));
 		button.setMaximumSize(new Dimension(100, 20));
+		NoteGUI noteGUI = new NoteGUI(this);
 		jbNotes.add(button);
+		guiNotes.add(noteGUI);
 		panelBody.add(button);
 		panelBody.updateUI();
 	}
-
+	
+	public void addButtonNote(NoteGUI noteGui) {
+		JButton button = new JButton(noteGui.jtfTitle.getText());
+		button.setPreferredSize(new Dimension(100, 20));
+		button.setMaximumSize(new Dimension(100, 20));
+		jbNotes.add(button);
+		guiNotes.add(noteGui);
+		panelBody.add(button);
+		panelBody.updateUI();
+	}
+	
+	public void openNewNote() {
+		NoteGUI ng = new NoteGUI(this);
+		ng.setVisible(true);
+		guiNewNotes.add(ng);
+	}
+	
 }

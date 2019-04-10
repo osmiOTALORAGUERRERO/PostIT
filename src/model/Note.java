@@ -1,10 +1,15 @@
 package model;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class Note {
 	
 	private String title;
 	private String note;
-	private String path;
+	private String path = null;
 	
 	public Note() {
 		
@@ -40,7 +45,26 @@ public class Note {
 		
 	}
 	
-	public void saveNote() {
-		
+	public boolean save() {
+		boolean state = false;
+		try {
+			File f;
+			BufferedWriter bw;
+			if(this.path == null) {
+				f = new File("/src/persistenceFiles/"+this.title);
+				f.createNewFile();
+				
+			}else {
+				f = new File(this.path);
+			}
+			bw = new BufferedWriter(new FileWriter(f));
+			bw.write("Title: "+ this.title+"\n");
+			bw.write("Note: "+this.note+"\n");
+			bw.close();
+			state = true;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return state;
 	}
 }

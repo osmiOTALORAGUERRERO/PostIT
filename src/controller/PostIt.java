@@ -9,8 +9,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import model.Note;
+import views.NoteGUI;
 import views.PostItGUI;
 
 public class PostIt implements ActionListener{
@@ -87,20 +89,55 @@ public class PostIt implements ActionListener{
 		for(int i=0; i<notes.size(); i++) {
 			this.postItGUI.addButtonNote(notes.get(i).getTitle());
 		}
+		for(int i=0; i<notes.size(); i++) {
+			this.postItGUI.jbNotes.get(i).addActionListener(this);
+			
+		}
 	}
 	
 	public void newNote() {
-		
+		this.postItGUI.openNewNote();
+		this.postItGUI.guiNewNotes.get(this.postItGUI.guiNewNotes.size()-1).jbSave.addActionListener(this);
 	}
 	
 	public void openNote() {
 		
+	}
+	
+	public void saveNote(NoteGUI noteGui, int i) {
+		this.notes.get(i).setTitle(noteGui.jtfTitle.getText());
+		this.notes.get(i).setNote(noteGui.jtaNote.getText());
+		if(!this.notes.get(i).save()) {
+			JOptionPane.showMessageDialog(noteGui, "Error saving the note, try again", "Error", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == this.postItGUI.jbNewNote) {
 			newNote();
+		}else
+		{
+			for(int i=0; i<notes.size(); i++) {
+				if(e.getSource() == this.postItGUI.jbNotes.get(i)) {
+					return;
+				}
+			}
+			for(int i=0; i<this.postItGUI.guiNewNotes.size(); i++) {
+				if(e.getSource() == this.postItGUI.guiNewNotes.get(i).jbSave) {
+					Note note = new Note();
+					this.notes.add(note);
+					this.postItGUI.addButtonNote(this.postItGUI.guiNewNotes.get(i));
+					saveNote(this.postItGUI.guiNewNotes.remove(i), this.notes.indexOf(note));
+					return;
+				}
+			}
+			for(int i=0; i<this.postItGUI.guiNotes.size(); i++) {
+				if(e.getSource() == this.postItGUI.guiNotes.get(i).jbSave) {
+					saveNote(this.postItGUI.guiNotes.get(i), i);
+					return;
+				}
+			}
 		}
 		
 	}
