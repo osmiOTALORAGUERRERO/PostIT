@@ -18,9 +18,8 @@ public class NoteGUI extends JDialog{
 	public JButton jbSave;
 	
 	public NoteGUI(Frame frame) {
-		super(frame, true);
+		super(frame, false);
 		setBackground(new Color(34,34,34));
-		//setVisible(true);
 		setLayout(new GridBagLayout());
 		
 		this.jtfTitle = new JTextField("Your Title", 20);

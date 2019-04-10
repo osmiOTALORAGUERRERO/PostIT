@@ -41,8 +41,10 @@ public class Note {
 		this.note = note;
 	}
 	
-	public void delete() {
+	public boolean delete() {
+		boolean state = false;
 		
+		return state;
 	}
 	
 	public boolean save() {
@@ -51,7 +53,7 @@ public class Note {
 			File f;
 			BufferedWriter bw;
 			if(this.path == null) {
-				f = new File("/src/persistenceFiles/"+this.title);
+				f = new File("src/persistenceFiles/"+this.title);
 				f.createNewFile();
 				
 			}else {

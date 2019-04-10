@@ -89,6 +89,8 @@ public class PostItGUI extends JFrame{
 	
 	public void openNewNote() {
 		NoteGUI ng = new NoteGUI(this);
+		ng.setLocationRelativeTo(null);
+		ng.pack();
 		ng.setVisible(true);
 		guiNewNotes.add(ng);
 	}

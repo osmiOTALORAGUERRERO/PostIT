@@ -74,7 +74,6 @@ public class PostIt implements ActionListener{
 			br.close();
 			note = note.replaceFirst("Title: ", "");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return note;
@@ -100,8 +99,12 @@ public class PostIt implements ActionListener{
 		this.postItGUI.guiNewNotes.get(this.postItGUI.guiNewNotes.size()-1).jbSave.addActionListener(this);
 	}
 	
-	public void openNote() {
-		
+	public void openNote(int i) {
+		this.postItGUI.guiNotes.get(i).jtfTitle.setText(this.notes.get(i).getTitle());
+		this.postItGUI.guiNotes.get(i).jtaNote.setText(this.notes.get(i).getNote());
+		this.postItGUI.guiNotes.get(i).setLocationRelativeTo(null);
+		this.postItGUI.guiNotes.get(i).pack();
+		this.postItGUI.guiNotes.get(i).setVisible(true);
 	}
 	
 	public void saveNote(NoteGUI noteGui, int i) {
@@ -120,6 +123,7 @@ public class PostIt implements ActionListener{
 		{
 			for(int i=0; i<notes.size(); i++) {
 				if(e.getSource() == this.postItGUI.jbNotes.get(i)) {
+					openNote(i);
 					return;
 				}
 			}
