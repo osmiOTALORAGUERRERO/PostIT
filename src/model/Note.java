@@ -43,7 +43,16 @@ public class Note {
 	
 	public boolean delete() {
 		boolean state = false;
-		
+			File f;
+			if(path.equals(null)) {
+				state = false;
+			}else {
+				f = new File(path);
+				if(f.exists()) {
+					f.delete();
+					state = true;
+				}
+			}
 		return state;
 	}
 	
@@ -53,9 +62,9 @@ public class Note {
 			File f;
 			BufferedWriter bw;
 			if(this.path == null) {
-				f = new File("src/persistenceFiles/"+this.title);
+				f = new File("src/persistenceFiles/"+this.title+".txt");
 				f.createNewFile();
-				
+				this.path = "src/persistenceFiles/"+this.title+".txt";
 			}else {
 				f = new File(this.path);
 			}

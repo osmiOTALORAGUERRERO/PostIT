@@ -97,11 +97,14 @@ public class PostIt implements ActionListener{
 	public void newNote() {
 		this.postItGUI.openNewNote();
 		this.postItGUI.guiNewNotes.get(this.postItGUI.guiNewNotes.size()-1).jbSave.addActionListener(this);
+		this.postItGUI.guiNewNotes.get(this.postItGUI.guiNewNotes.size()-1).jbDelete.addActionListener(this);
 	}
 	
 	public void openNote(int i) {
 		this.postItGUI.guiNotes.get(i).jtfTitle.setText(this.notes.get(i).getTitle());
 		this.postItGUI.guiNotes.get(i).jtaNote.setText(this.notes.get(i).getNote());
+		this.postItGUI.guiNotes.get(i).jbSave.addActionListener(this);
+		this.postItGUI.guiNotes.get(i).jbDelete.addActionListener(this);
 		this.postItGUI.guiNotes.get(i).setLocationRelativeTo(null);
 		this.postItGUI.guiNotes.get(i).pack();
 		this.postItGUI.guiNotes.get(i).setVisible(true);
@@ -112,6 +115,17 @@ public class PostIt implements ActionListener{
 		this.notes.get(i).setNote(noteGui.jtaNote.getText());
 		if(!this.notes.get(i).save()) {
 			JOptionPane.showMessageDialog(noteGui, "Error saving the note, try again", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	public void deleteNote(int i) {
+		if(this.notes.get(i).delete()) {
+			this.postItGUI.guiNotes.get(i).closeWindow();
+			this.postItGUI.guiNotes.remove(i);
+			this.postItGUI.panelBody.remove(this.postItGUI.jbNotes.get(i));
+			this.postItGUI.jbNotes.remove(i);
+			this.postItGUI.panelBody.updateUI();
+			this.notes.remove(i);
 		}
 	}
 
@@ -131,14 +145,33 @@ public class PostIt implements ActionListener{
 				if(e.getSource() == this.postItGUI.guiNewNotes.get(i).jbSave) {
 					Note note = new Note();
 					this.notes.add(note);
-					this.postItGUI.addButtonNote(this.postItGUI.guiNewNotes.get(i));
-					saveNote(this.postItGUI.guiNewNotes.remove(i), this.notes.indexOf(note));
+					saveNote(this.postItGUI.guiNewNotes.get(i), this.notes.indexOf(note));
+					this.postItGUI.addButtonNote(this.postItGUI.guiNewNotes.remove(i));
+					this.postItGUI.jbNotes.get(this.notes.indexOf(note)).addActionListener(this);
 					return;
 				}
 			}
 			for(int i=0; i<this.postItGUI.guiNotes.size(); i++) {
 				if(e.getSource() == this.postItGUI.guiNotes.get(i).jbSave) {
 					saveNote(this.postItGUI.guiNotes.get(i), i);
+					return;
+				}
+			}
+			for(int i=0; i<this.postItGUI.guiNewNotes.size(); i++) {
+				if(e.getSource() == this.postItGUI.guiNewNotes.get(i).jbDelete) {
+					JOptionPane.showMessageDialog(this.postItGUI.guiNewNotes.get(i), "Note not saved", "Error", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+			}
+			for(int i=0; i<this.postItGUI.guiNotes.size(); i++) {
+				if(e.getSource() == this.postItGUI.guiNotes.get(i).jbDelete) {
+					int confirmation = JOptionPane.showConfirmDialog(this.postItGUI.guiNotes.get(i), "Are you sure?", "Confirmation message", JOptionPane.YES_NO_OPTION);
+					if(confirmation == JOptionPane.YES_OPTION) {
+						System.out.println(i);
+						System.out.println(this.notes.size());
+						System.out.println(this.notes.get(i).getTitle());
+						deleteNote(i);
+					}
 					return;
 				}
 			}
